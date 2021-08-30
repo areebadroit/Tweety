@@ -1,0 +1,17 @@
+<ul>
+  <% if(locals.user) { %> Hi
+  <li><a href="/users/profile/<%= user.id %>"><%= user.name %></a></li>
+  <li>
+    <form action="/users/signout" method="POST">
+      <input type="submit" value="Sign Out" />
+    </form>
+  </li>
+  <% } else {%>
+  <li>
+    <a href="/users/signin">Sign In</a>
+  </li>
+  <li>
+    <a href="/users/signup">Sign Up</a>
+  </li>
+  <% }%>
+</ul>
