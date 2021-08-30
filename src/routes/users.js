@@ -18,11 +18,10 @@ router.post("/create", create);//new user signup
 router.post("/update/:id", update);
 router.get("/signin", signIn);
 router.get("/profile/:id", passport.checkAuthentication, profile);
-router.post("/signout", destroySession);
+router.get("/signout", destroySession);
 router.post(//signin
   "/create-session",
   passport.authenticate("local", {
-    successRedirect: "/",
     failureRedirect: "/users/signin",
   }),
   createSession

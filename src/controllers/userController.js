@@ -35,9 +35,9 @@ const signIn = function (req, res) {
 };
 
 const createSession = function (req, res) {
-  //req.flash('success', 'Signed In Successfully');
+  req.flash('success', 'Signed In Successfully');
   //console.log("flash", req.flash);
-  console.log(req);
+//   console.log(req);
   return res.redirect('/');
 };
 
@@ -68,7 +68,7 @@ const update = async function (req, res) {
 };
 const destroySession = function (req, res) {
   req.logout();
-  // req.flash('success', 'Signed Out Successfully');
+  req.flash('info', 'Signed Out Successfully');
   //console.log("flash", req.flash);
   return res.redirect('/');
 };
