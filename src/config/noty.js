@@ -1,3 +1,0 @@
-const notyConfig = function () {
-    
-}

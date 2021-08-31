@@ -1,4 +1,9 @@
 const User = require('../models/user');
+const multer  = require('multer')
+const upload = multer({ dest: './src/uploads/' });
+const {getFile, uploadFile} = require('../config/s3');
+
+const {unlinkSync} = require('fs');
 
 const create = async function (req, res) {
   console.log(req.body);
@@ -46,6 +51,9 @@ const profile = async function (req, res) {
     if (err || !user) {
       console.log(err);
       return res.redirect('back');
+      } 
+      if(!user.avatar) {
+        user.avatar = 'f17a6fa085c039c41d3e595aaa6d8946';
     }
     return res.render('users/user_profile', {
       title: 'User Profile',
@@ -72,6 +80,32 @@ const destroySession = function (req, res) {
   //console.log("flash", req.flash);
   return res.redirect('/');
 };
+
+const updateAvatar = async function(req, res) {
+    const file = req.file;
+    try {
+        const result = await uploadFile(file);
+        unlinkSync(file.path);
+        const currentUser = req.user.id;
+        //console.log("currentuser", currentUser);
+        await User.findByIdAndUpdate(currentUser, {avatar: result.key}, function(err, user) {
+            if(err) {
+                console.log(err);
+                return res.redirect('/');
+            }
+            return res.redirect('back');
+        })
+    } catch(err) {
+        console.log(err);
+        return res.redirect('/');
+    }
+}
+
+const getAvatar = function(req, res) {
+    const imgStream = getFile(req.params.key);
+    imgStream.pipe(res);
+}
+
 module.exports = {
   create,
   signUp,
@@ -79,5 +113,7 @@ module.exports = {
   createSession,
   profile,
   update,
-  destroySession,
+    destroySession,
+    updateAvatar,
+  getAvatar
 };
