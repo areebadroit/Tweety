@@ -1,12 +1,13 @@
-<li>
-    <h2><%= tweet.contents %></h2> 
+<div>
+    <p><%= tweet.contents %></p> 
     <% if(locals.user && locals.user.id == tweet.user.id) { %>  
         <form action="/tweets/destroy/<%= tweet.id%>" method="GET">
             <input type="submit" value="Remove">
         </form>
     <% } %> 
-</li>
-<small><b><%= tweet.user.name %></b></small>
+    <small><b><%= tweet.user.name %></b></small>
+<div>
+
 <div>
     <% if (locals.user) { %>
         <form action="/comments/create" method="POST">

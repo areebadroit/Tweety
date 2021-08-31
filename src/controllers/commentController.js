@@ -1,7 +1,8 @@
 const Comment = require('../models/comment');
 const Tweet = require('../models/tweet');
-
+const commentEmailWorker = require('../workers/commentMailerWorker');
 const {  newCommentMailer } = require('../mailers/comments_mailer');
+const queue = require('../config/kue');
 
 const create = async function (req, res) {
   try {
@@ -13,7 +14,15 @@ const create = async function (req, res) {
     });
     tweet.comments.push(comment);
     tweet.save();
-    newCommentMailer(tweet);
+    let job = queue.create('email', tweet).save(function (err) {
+      if (err) {
+        console.log('Error');
+      return;
+      }
+      console.log('Passed',job.id);
+      return;
+    })
+    //newCommentMailer(tweet);
     return res.redirect('/');
   } catch (err) {
     console.log(err);
