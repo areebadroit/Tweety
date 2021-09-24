@@ -13,9 +13,26 @@
 <% } %>
 
 <div>
-    <ul>
-        <% for(tweet of tweets) { %>
-            <%- include('./tweets/_tweet') %> 
-        <% } %>  
-    </ul>
+  <ul>
+    <% for(tweet of tweets) { %> <%- include('./tweets/_tweet') %> <% } %>
+  </ul>
 </div>
+
+<%- include('./utils/_chat_box') %>
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"
+  integrity="sha512-WL6WGKMPBiM9PnHRYIn5YEtq0Z8XP4fkVb4qy7PP4vhmYQErJ/dySyXuFIMDf1eEYCXCrQrMJfkNwKc9gsjTjA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script src="js/chat_engine.js"></script>
+<% if(locals.user){ %>
+<script>
+    new ChatEngine('chat-input', '<%=locals.user._id%>');
+</script>
+<% } %> 

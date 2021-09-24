@@ -6,13 +6,21 @@ const session = require("express-session");
 const expressLayouts = require("express-ejs-layouts");
 const mongoStore = require("connect-mongo");
 const flash = require("connect-flash");
-const { setFlash } = require('./src/middleware/flash');
+const { setFlash } = require("./src/middleware/flash");
 
 const router = require("./src/routes/index");
 const connect = require("./src/config/db");
 const passportlocal = require("./src/middleware/passport-local");
 
 const app = express();
+app.use(cors());
+const chatEngine = require("http").Server(app);
+const { socket } = require("./src/config/sockets");
+const chatSockets = socket(chatEngine);
+
+chatEngine.listen(3001, () => {
+  console.log("Socket listening to 3001");
+});
 app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: true }));
